@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Welcome</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+      
+      <style>
+	p    {color: red;}
+	#celsiusValue{
+		font-size: 300px;
+		font-weight: 400;
+	}
+	
+	.center{
+		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  		font-family: monospace;
+	}
+</style>
+      
+   </head>
+   <body>
+      <h1 class="center">Temperatur Messstelle</h1>
+      <h2 th:utext="${start}">..!..</h2>
+       
+       <h2 class="center" style="font-size: 80px;" th:utext="${message}">..!..</h2>
+       <div id="celsiusValue" class="center" th:text="${test} + '°C'"></div>       
+       
+       <script  th:inline="javascript">
+       var tempValue = /*[[${test}]]*/ 'default';
+       console.log(tempValue);
+       var tmpValueFloat = parseFloat(tempValue);
+       
+       if (tmpValueFloat > 39){
+    	   document.body.style.backgroundColor = "#E74C3C";
+       } else if (tmpValueFloat >34) {
+    	   document.body.style.backgroundColor = "#A9DFBF";
+       } else {
+    	   document.body.style.backgroundColor = "#AED6F1"; 
+
+       }
+
+       location.reload();
+       </script>
+       
+       
+   </body>
+    
+</html>
