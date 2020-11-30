@@ -1,7 +1,5 @@
 package pacApp.pacController;
 
-import java.net.Socket;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,7 +47,7 @@ public class PageController {
 	    		model.addAttribute("message", "Ihr Körpertemperatur ist normal!");  
 	    	} else {
 	    		model.addAttribute("message", "Ihr Körpertemperatur ist zu niedrig!");  
-	    	}
+	    	} 
 	    	if (tempEsp32.getValue() < 20) 
 	    		model.addAttribute("test", " - ");
 	    	else
