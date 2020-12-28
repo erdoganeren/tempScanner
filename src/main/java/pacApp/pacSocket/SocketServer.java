@@ -39,8 +39,10 @@ public class SocketServer {
 		 while (true) {
 			 Socket s=ss.accept();//establishes connection   	 
 			 BufferedReader rein = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			 String rets = rein.readLine();	 
+			 String rets = rein.readLine();	
 			 System.out.println(rets);
+			 PrintStream raus = new PrintStream(s.getOutputStream());
+			 raus.println("OK");
 	     }
 		}catch(Exception e) {
 			System.out.println(e);
@@ -54,6 +56,8 @@ public class SocketServer {
 				 BufferedReader rein = new BufferedReader(new InputStreamReader(s.getInputStream()));
 				 String rets = rein.readLine();	 
 				 System.out.println(rets);
+				 PrintStream raus = new PrintStream(s.getOutputStream());
+				 raus.println("OK");
 				 return rets;
 		     }
 			}catch(Exception e) {

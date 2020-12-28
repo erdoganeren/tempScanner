@@ -1,50 +1,95 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8" />
-      <title>Welcome</title>
-      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-      
-      <style>
-	p    {color: red;}
-	#celsiusValue{
-		font-size: 300px;
-		font-weight: 400;
+<head>
+<meta charset="UTF-8" />
+<title>Welcome</title>
+
+<style>
+p {
+	color: red;
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    background-color: lightblue;
+    font-size: 150px;
+  }
+  #celsiusValue {
+	font-size: 150px;
+	font-weight: 200;
+  }
+  .messageValue{
+	style="font-size: 28px;"
+ }
+ .boxImage{
+	width: 170px;
 	}
-	
-	.center{
-		display: flex;
-  		align-items: center;
-  		justify-content: center;
-  		font-family: monospace;
-	}
+}
+
+
+#celsiusValue {
+	font-size: 250px;
+	font-weight: 400;
+}
+.messageValue{
+	font-size: 38px;
+}
+
+.boxImage{
+	width: 350px;
+}
+.center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: monospace;
+}
 </style>
-      
-   </head>
-   <body>
-      <h1 class="center">Temperatur Messstelle</h1>
-      <h2 th:utext="${start}">..!..</h2>
-       
-       <h2 class="center" style="font-size: 80px;" th:utext="${message}">..!..</h2>
-       <div id="celsiusValue" class="center" th:text="${test} + '°C'"></div>       
-       
-       <script  th:inline="javascript">
-       var tempValue = /*[[${test}]]*/ 'default';
-       console.log(tempValue);
-       var tmpValueFloat = parseFloat(tempValue);
-       
-       if (tmpValueFloat > 39){
-    	   document.body.style.backgroundColor = "#E74C3C";
-       } else if (tmpValueFloat >29) {
-    	   document.body.style.backgroundColor = "#A9DFBF";
-       } else {
-    	   document.body.style.backgroundColor = "#AED6F1"; 
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+	<h1 class="center">Temperatur Messstelle</h1>
+	<h2 th:utext="${start}">..!..</h2>
 
-       }
+	<h2 class="messageValue"  th:utext="${message}">..!..</h2>
+	<div id="celsiusValue" class="center" th:text="${tmpValue} + '°C'"></div>
 
-       location.reload();
-       </script>
-              
-   </body>
-    
+	<div id="id01" class="w3-modal">
+		<div class="w3-modal-content">
+			<header>
+				<span onclick="document.getElementById('id01').style.display='none'"
+					class="w3-button w3-display-topright">&times;</span>
+			</header>
+			<center>
+				<div class="w3-container">
+					<img class="boxImage"  src="/images/BoxUse.jpg" alt="BoxUse">
+				</div>
+			</center>
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+		document.getElementById('id01').style.display = 'none';
+		var tempValue = /*[[${tmpValue}]]*/'default';
+		console.log(tempValue);
+		var tmpValueFloat = parseFloat(tempValue);
+
+		if (tmpValueFloat > 38.7) {
+			document.body.style.backgroundColor = "#E74C3C";
+		} else if (tmpValueFloat > 29) {
+			document.body.style.backgroundColor = "#A9DFBF";
+		} else {
+			document.body.style.backgroundColor = "#AED6F1";
+		}
+
+		setTimeout(function() {
+			document.getElementById('id01').style.display = 'block';
+			location.reload();
+		}, 4000);
+
+		// location.reload();
+	</script>
+
+</body>
+
 </html>

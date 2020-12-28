@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Willkommen</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="../utils.js"></script>
+
+<style>
+p {
+	color: red;
+}
+
+#celsiusValue, #measurmentListCountValue, #risikoCountValue {
+	font-size: 150px;
+	font-weight: 400;
+}
+
+.valueBox {
+	float: left;
+	padding: 20px;
+	background: #eee;
+	margin: 10px;
+}
+
+.grafikBox{
+	float: left;
+	padding: 53px;
+	background: #eee;
+	margin: 10px;
+}
+
+.tableContainer {
+	margin-top: 350px;
+}
+
+.center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: monospace;
+}
+
+.valueTable{
+	width: 600px;
+}
+
+</style>
+</head>
+<body>
+	<h1>Übersicht</h1>
+	<div class="valueBox">
+		<h2>Letzter gemessener Wert</h2>
+		<div id="celsiusValue" th:text="${tmpValue} + '°C'"></div>
+	</div>
+	<div class="valueBox">
+		<h2>Anzahl gemessen</h2>
+		<div id="measurmentListCountValue" th:text="${measurementList.size()}"></div>
+	</div>
+	<div class="valueBox">
+		<h2>Anzahl Risiko</h2>
+		<div id="risikoCountValue" th:text="${risikoCount}"></div>
+	</div>
+	<div class="grafikBox">
+		<h2></h2>
+		<canvas id="myChart"></canvas>
+	</div>
+	<div class="tableContainer">
+		<table border="1px" class="valueTable">
+			<thead>
+				<tr>
+					<th>Temperatur in °C</th>
+					<th>Distanz in cm</th>
+					<th>Datum und Uhrzeit</th>
+					<th>Risiko</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="measurement : ${measurementList}">
+					<td><span th:text="${measurement.tempValue}"> Value </span></td>
+					<td><span th:text="${measurement.distance}"> Distance </span></td>
+					<td><span th:text="${measurement.date}"> DateTime </span></td>
+					<td><span th:text="${measurement.risk}"> Risiko </span></td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script th:inline="javascript">
+		var tempValue = /*[[${tmpValue}]]*/'default';
+		console.log(tempValue);
+		var tmpValueFloat = parseFloat(tempValue);
+
+		if (tmpValueFloat > 38.7) {
+			document.getElementById("celsiusValue").style.color = "#E74C3C";
+		} else if (tmpValueFloat > 29) {
+			document.getElementById("celsiusValue").style.color = "#A9DFBF";
+		} else {
+			document.getElementById("celsiusValue").style.color = "#AED6F1";
+		}
+		
+		var xAxisData = /*[[ ${measurementList.size()} ]]*/[];
+        var yAxisData = /*[[ ${risikoCount} ]]*/[];
+        drawchart(xAxisData-yAxisData, yAxisData);
+        
+        function drawchart(xAxisData, yAxisData) {
+
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var ChartDemo = new Chart(ctx, {
+            	type: 'doughnut',
+                data: {
+    				datasets: [{
+    					data: [
+    						xAxisData,
+    						yAxisData
+    					], backgroundColor: [
+    		                'rgba(54, 162, 235, 0.8)', 
+    		                'rgba(255, 99, 132, 0.8)'
+    		            ],
+    					label: 'Dataset'
+    				}],
+    				labels: [
+    					'Neutral',
+    					'Risiko Anzahl'
+    				]
+    			},
+                options : {
+                    responsive : true,
+                }
+            });
+        }
+	</script>
+	<br>
+	<br>
+	<form action="#" th:action="@{'/resetMesurements'}" th:method="get" >
+     <input type="hidden" name="_method" value="delete" />
+     <button type="submit" id="submitButton">Messungliste löschen</button>
+	</form>
+</body>
+
+</html>
